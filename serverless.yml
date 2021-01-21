@@ -33,7 +33,7 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
         - dynamodb:DescribeTable
-      Resource: "arn:aws:dynamodb:us-east-1:*:*"
+      Resource: "arn:aws:dynamodb:eu-west-1:*:*"
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
@@ -45,6 +45,8 @@ functions:
       - http:
           path: clients
           method: post
+          authorizer: aws_iam
+
   list-clients:
     # Defines an HTTP API endpoint that calls the main function in list.js
     # - path: url path is /notes
@@ -54,15 +56,20 @@ functions:
       - http:
           path: clients
           method: get
+          authorizer: aws_iam
+
   update-client:
     handler: update-client.main
     events:
       - http:
           path: clients/{id}
           method: post
+          authorizer: aws_iam
+
   delete-client:
     handler: delete-client.main
     events:
       - http:
           path: clients/{id}
           method: delete
+          authorizer: aws_iam
